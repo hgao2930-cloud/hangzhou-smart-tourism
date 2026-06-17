@@ -1,0 +1,584 @@
+/* ============================================================
+   杭州智慧旅游 WebGIS — 工具栏 & 全局样式
+   ============================================================ */
+
+/* ---------- CSS 变量 ---------- */
+:root {
+    --bg-toolbar: #1a1d2e;
+    --bg-toolbar-secondary: #222639;
+    --bg-btn: #2a2f42;
+    --bg-btn-hover: #363d56;
+    --bg-btn-active: #1e3a5f;
+    --border-color: #2d3148;
+    --border-subtle: #363b52;
+    --text-primary: #e4e7f0;
+    --text-secondary: #8b90a5;
+    --text-muted: #5e6278;
+    --accent: #4a90d9;
+    --accent-hover: #5ba0e8;
+    --accent-glow: rgba(74, 144, 217, 0.25);
+    --danger: #e0556a;
+    --danger-hover: #f0697c;
+    --success: #3cb878;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --transition-fast: 150ms ease;
+    --transition-normal: 200ms ease;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+        'Microsoft YaHei', sans-serif;
+}
+
+/* ---------- 全局 ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text-primary);
+    background: #0f1119;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- 地图 ---------- */
+#map {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+
+/* ============================================================
+   工具栏容器
+   ============================================================ */
+#toolbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: linear-gradient(180deg,
+            rgba(26, 29, 46, 0.98) 0%,
+            rgba(26, 29, 46, 0.96) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    user-select: none;
+}
+
+/* ---------- 主工具栏行 ---------- */
+#toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 6px 12px;
+    min-height: 48px;
+}
+
+/* ---------- 工具栏分组 ---------- */
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 10px;
+    border-right: 1px solid var(--border-subtle);
+}
+
+.toolbar-group:last-child {
+    border-right: none;
+}
+
+/* 分组标签 */
+.group-label {
+    display: none;
+    /* 默认隐藏，窄屏时可以考虑显示 */
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-right: 4px;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   按钮 — 统一样式
+   ============================================================ */
+
+/* 基础按钮 */
+.tb-btn,
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-btn);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background var(--transition-fast),
+        color var(--transition-fast),
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+/* 按钮悬停 */
+.tb-btn:hover,
+.filter-btn:hover {
+    background: var(--bg-btn-hover);
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+}
+
+/* 按钮按下 */
+.tb-btn:active,
+.filter-btn:active {
+    transform: scale(0.97);
+    transition: transform 80ms ease;
+}
+
+/* 按钮获得焦点 */
+.tb-btn:focus-visible,
+.filter-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* 激活状态 */
+.tb-btn.active {
+    background: var(--bg-btn-active);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 主要操作按钮 */
+.tb-btn-primary {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+.tb-btn-primary:hover {
+    background: var(--accent-hover);
+    color: #fff;
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* 危险操作按钮 */
+.tb-btn-danger {
+    color: var(--danger);
+}
+
+.tb-btn-danger:hover {
+    background: rgba(224, 85, 106, 0.15);
+    color: var(--danger-hover);
+    border-color: rgba(224, 85, 106, 0.3);
+}
+
+/* ============================================================
+   下拉选择框
+   ============================================================ */
+.tb-select {
+    height: 32px;
+    padding: 0 28px 0 10px;
+    font-size: 13px;
+    font-family: var(--font-sans);
+    color: var(--text-secondary);
+    background: var(--bg-btn);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b90a5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition:
+        background var(--transition-fast),
+        color var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.tb-select:hover {
+    background-color: var(--bg-btn-hover);
+    color: var(--text-primary);
+}
+
+.tb-select:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.tb-select option {
+    background: var(--bg-toolbar);
+    color: var(--text-primary);
+}
+
+/* ============================================================
+   搜索输入框
+   ============================================================ */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.tb-search {
+    height: 32px;
+    width: 150px;
+    padding: 0 10px;
+    font-size: 13px;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    background: #1a1d2e;
+    border: 1px solid var(--border-color);
+    border-right: none;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    outline: none;
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.tb-search::placeholder {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.tb-search:hover {
+    border-color: var(--border-subtle);
+}
+
+.tb-search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+    z-index: 1;
+}
+
+/* 搜索按钮 — 与输入框紧密相连 */
+.group-search .tb-btn {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* ============================================================
+   文件导入按钮 (伪装成普通按钮)
+   ============================================================ */
+.tb-btn-file {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.tb-btn-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 0;
+}
+
+/* ============================================================
+   测量结果
+   ============================================================ */
+.measure-result {
+    font-size: 12px;
+    color: var(--success);
+    font-family: var(--font-mono);
+    padding: 0 8px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: -0.2px;
+}
+
+.measure-result:empty {
+    display: none;
+}
+
+/* ============================================================
+   景点分类筛选栏
+   ============================================================ */
+#filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 5px 16px 7px;
+    background: var(--bg-toolbar-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+/* 筛选按钮 */
+.filter-btn {
+    height: 28px;
+    padding: 0 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 14px;
+    /* 胶囊形 */
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.filter-btn.active:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+/* ============================================================
+   弹窗 (保持原有结构，微调优化)
+   ============================================================ */
+.ol-popup {
+    position: absolute;
+    background: #fff;
+    border-radius: 10px;
+    border: none;
+    padding: 14px 18px;
+    min-width: 140px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 2px 6px rgba(0, 0, 0, 0.12);
+    font-family: var(--font-sans);
+    color: #333;
+    z-index: 200;
+    transform: translate(-50%, -100%);
+    animation: popup-in 180ms ease-out;
+}
+
+@keyframes popup-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -100%) translateY(6px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -100%) translateY(0) scale(1);
+    }
+}
+
+/* 弹窗的小三角箭头 */
+.ol-popup::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #fff;
+}
+
+#popup-closer {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background var(--transition-fast),
+        color var(--transition-fast);
+}
+
+#popup-closer:hover {
+    background: #e0e0e0;
+    color: #333;
+}
+
+#popup-content {
+    font-size: 14px;
+    font-weight: 600;
+    padding-right: 20px;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   OL 控件微调（如果有的话）
+   ============================================================ */
+.ol-zoom {
+    top: auto !important;
+    bottom: 20px !important;
+    left: 16px !important;
+}
+
+.ol-zoom button {
+    background: rgba(26, 29, 46, 0.9) !important;
+    color: #fff !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.ol-attribution {
+    bottom: 8px !important;
+    right: 8px !important;
+    font-size: 10px !important;
+    opacity: 0.7;
+}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+@media (max-width: 900px) {
+    #toolbar {
+        padding: 4px 8px;
+        gap: 2px;
+    }
+
+    .toolbar-group {
+        padding: 0 6px;
+        border-right: none;
+    }
+
+    .tb-btn {
+        height: 28px;
+        padding: 0 8px;
+        font-size: 11px;
+    }
+
+    .tb-select {
+        height: 28px;
+        font-size: 11px;
+        padding-right: 22px;
+    }
+
+    .tb-search {
+        height: 28px;
+        width: 100px;
+        font-size: 11px;
+    }
+
+    #filter-bar {
+        padding: 4px 10px 6px;
+        gap: 2px;
+    }
+
+    .filter-btn {
+        height: 24px;
+        padding: 0 10px;
+        font-size: 11px;
+    }
+
+    .group-label {
+        display: inline;
+        font-size: 9px;
+    }
+}
+
+/* 手机端：工具栏允许横向滚动 */
+@media (max-width: 600px) {
+    #toolbar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #toolbar::-webkit-scrollbar {
+        height: 0;
+    }
+
+    .toolbar-group {
+        flex-shrink: 0;
+    }
+
+    #filter-bar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #filter-bar::-webkit-scrollbar {
+        height: 0;
+    }
+
+    .tb-search {
+        width: 80px;
+    }
+}
+
+/* ============================================================
+   自定义滚动条 (工具栏内部)
+   ============================================================ */
+#toolbar::-webkit-scrollbar,
+#filter-bar::-webkit-scrollbar {
+    height: 3px;
+}
+
+#toolbar::-webkit-scrollbar-track,
+#filter-bar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#toolbar::-webkit-scrollbar-thumb,
+#filter-bar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+/* ============================================================
+   无障碍：减少动画
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .tb-btn,
+    .filter-btn,
+    .tb-select,
+    .tb-search,
+    .ol-popup {
+        transition: none !important;
+        animation: none !important;
+    }
+}

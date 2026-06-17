@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的模块化地图</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* 内联关键样式防止加载闪烁 */
+        #map {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== 顶部工具栏容器 ========== -->
+    <div id="toolbar-container">
+        <div id="toolbar">
+            <!-- 第一组：底图切换 -->
+            <div class="toolbar-group">
+                <span class="group-label">底图</span>
+                <button id="osm" class="tb-btn">OSM</button>
+                <button id="gaode" class="tb-btn active">高德</button>
+            </div>
+
+            <!-- 第二组：绘图工具 -->
+            <div class="toolbar-group">
+                <span class="group-label">绘图</span>
+                <select id="type" class="tb-select">
+                    <option value="None">无</option>
+                    <option value="Point">点</option>
+                    <option value="LineString">线</option>
+                    <option value="Polygon">面</option>
+                    <option value="Circle">圆</option>
+                </select>
+                <button id="select" class="tb-btn">选中</button>
+                <button id="delete" class="tb-btn tb-btn-danger">删除</button>
+                <button id="edit" class="tb-btn">编辑</button>
+            </div>
+
+            <!-- 第三组：导入导出 -->
+            <div class="toolbar-group">
+                <span class="group-label">数据</span>
+                <button id="export" class="tb-btn">导出</button>
+                <label class="tb-btn tb-btn-file">
+                    导入
+                    <input type="file" id="importInput" accept=".geojson,.json">
+                </label>
+            </div>
+
+            <!-- 第四组：测量 -->
+            <div class="toolbar-group">
+                <span class="group-label">测量</span>
+                <button id="measure" class="tb-btn">测量</button>
+                <span id="measurementResult" class="measure-result"></span>
+            </div>
+
+            <!-- 第五组：搜索 -->
+            <div class="toolbar-group group-search">
+                <span class="group-label">搜索</span>
+                <div class="search-wrapper">
+                    <input id="searchInput" class="tb-search" type="text" placeholder="输入景点名称…">
+                    <button id="searchBtn" class="tb-btn tb-btn-primary">搜索</button>
+                </div>
+            </div>
+
+            <!-- 第六组：空间查询 -->
+            <div class="toolbar-group">
+                <span class="group-label">分析</span>
+                <button id="QueryBtn" class="tb-btn tb-btn-primary">空间查询</button>
+            </div>
+        </div>
+
+        <!-- 景点分类筛选栏 -->
+        <div id="filter-bar">
+            <button data-type="all" class="filter-btn active">全部</button>
+            <button data-type="scenic" class="filter-btn">🏔 风景区</button>
+            <button data-type="temple" class="filter-btn">🛕 寺庙</button>
+            <button data-type="lake" class="filter-btn">🌊 湖泊</button>
+            <button data-type="park" class="filter-btn">🌳 公园</button>
+            <button data-type="mountain" class="filter-btn">⛰ 山</button>
+            <button data-type="bridge" class="filter-btn">🌉 桥</button>
+        </div>
+    </div>
+
+    <!-- ========== 地图区域 ========== -->
+    <div id="map"></div>
+
+    <!-- ========== 弹窗 ========== -->
+    <div id="popup" class="ol-popup">
+        <button id="popup-closer">&times;</button>
+        <div id="popup-content"></div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
